@@ -5,13 +5,13 @@ import './App.css';
 class PlayerRow extends Component {
   render() {
     return (
-      <span>
+      <div>
         {this.props.position}
         <input type="text" />
         <input type="text" />
         <input type="text" readOnly />
         <input type="text" />
-      </span>
+      </div>
     );
   }
 }
@@ -25,9 +25,27 @@ class PlayerRows extends Component {
       rbs: 7,
       wrs: 6,
       tes: 1,
+      qbRows: [<PlayerRow position="QB" />],
+      rbRows: [
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />,
+        <PlayerRow position="RB" />
+      ],
+      wrRows: [
+        <PlayerRow position="WR" />,
+        <PlayerRow position="WR" />,
+        <PlayerRow position="WR" />,
+        <PlayerRow position="WR" />,
+        <PlayerRow position="WR" />,
+        <PlayerRow position="WR" />
+      ],
+      teRows: [<PlayerRow position="TE" />],
     };
     this.updateBudget = this.updateBudget.bind(this);
-    this.updateQBs = this.updateQBs.bind(this);
     this.updateRBs = this.updateRBs.bind(this);
     this.updateWRs = this.updateWRs.bind(this);
     this.updateTEs = this.updateTEs.bind(this);
@@ -38,7 +56,18 @@ class PlayerRows extends Component {
   }
 
   updateQBs(event) {
-    this.setState({qbs: event.target.value})
+    this.setState(() => {qbs: event.target.value});
+    this.updateQBRows();
+  }
+
+  updateQBRows() {
+    var qbRows = this.state.qbRows;
+    if(qbRows.length !== this.state.qbs){
+      for(var i=this.state.qbRows.length;i<this.state.qbs;i++){
+        qbRows.push(<PlayerRow position="QB" />);
+      };
+      this.setState(() => {qbRows: qbRows});
+    }
   }
 
   updateRBs(event) {
@@ -59,14 +88,17 @@ class PlayerRows extends Component {
         <div class="setup">
           <input type="text" value={this.state.budget} onChange={this.updateBudget} />
           <span>
-            QBs<input type="text" value={this.state.qbs} onChange={this.updateQBs} />
+            QBs<input type="text" value={this.state.qbs} onChange={this.updateQBs.bind(this)} />
             RBs<input type="text" value={this.state.rbs} onChange={this.updateRBs} />
             WRs<input type="text" value={this.state.wrs} onChange={this.updateWRs} />
             TEs<input type="text" value={this.state.tes} onChange={this.updateTEs} />
           </span>
         </div>
         <div class="players">
-          {this.props.children}
+          {this.state.qbRows}
+          {this.state.rbRows}
+          {this.state.wrRows}
+          {this.state.teRows}
         </div>
       </div>
     );
@@ -77,8 +109,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <PlayerRows>
-        </PlayerRows>
+        <PlayerRows />
       </div>
     );
   }
