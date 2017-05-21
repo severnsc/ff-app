@@ -6,57 +6,79 @@ class PlayerRow extends Component {
   render() {
     return (
       <span>
-        <input type="text" name={this.props.playerName}/>
-        <input type="text" name={this.props.amountName}/>
-        <input type="text" readOnly name={this.props.maxName}/>
-        <input type="text" name={this.props.percentageName}/>
+        {this.props.position}
+        <input type="text" />
+        <input type="text" />
+        <input type="text" readOnly />
+        <input type="text" />
       </span>
     );
   }
 }
 
-class App extends Component {
+class PlayerRows extends Component {
   constructor(props){
     super(props);
     this.state = {
-      QB: 1,
-      WR: 6,
-      RB: 7,
-      TE: 1,
-      DST: 1,
-      K: 1,
+      budget: 200,
+      qbs: 1,
+      rbs: 7,
+      wrs: 6,
+      tes: 1,
     };
-    var playerRows = null;
+    this.updateBudget = this.updateBudget.bind(this);
+    this.updateQBs = this.updateQBs.bind(this);
+    this.updateRBs = this.updateRBs.bind(this);
+    this.updateWRs = this.updateWRs.bind(this);
+    this.updateTEs = this.updateTEs.bind(this);
   }
 
-  updateQB(amount) {
-    this.setState((prevState, props) => {QB: amount});
+  updateBudget(event) {
+    this.setState({budget: event.target.value})
   }
 
-  updateRB(amount) {
-    this.setState((prevState, props) => {RB: amount})
+  updateQBs(event) {
+    this.setState({qbs: event.target.value})
   }
 
-  updateWR(amount) {
-    this.setState((prevState, props) => {WR: amount})
+  updateRBs(event) {
+   this.setState({rbs: event.target.value}) 
   }
 
-  updateTE(amount) {
-    this.setState((prevState, props) => {TE: amount})
+  updateWRs(event) {
+   this.setState({wrs: event.target.value}) 
   }
 
-  updatePlayerRows() {
-
+  updateTEs(event) {
+   this.setState({tes: event.target.value}) 
   }
 
   render() {
+    return(
+      <div class="row">
+        <div class="setup">
+          <input type="text" value={this.state.budget} onChange={this.updateBudget} />
+          <span>
+            QBs<input type="text" value={this.state.qbs} onChange={this.updateQBs} />
+            RBs<input type="text" value={this.state.rbs} onChange={this.updateRBs} />
+            WRs<input type="text" value={this.state.wrs} onChange={this.updateWRs} />
+            TEs<input type="text" value={this.state.tes} onChange={this.updateTEs} />
+          </span>
+        </div>
+        <div class="players">
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+}
 
+class App extends Component {
+  render() {
     return (
       <div className="App">
-        <div class="Setup">
-          <span>How much is your auction budget?</span>
-          <input type="text" name="auctionBudget" />
-        </div>
+        <PlayerRows>
+        </PlayerRows>
       </div>
     );
   }
