@@ -7,7 +7,12 @@ class PlayerRow extends Component {
     super(props);
     this.state = {
       percentage: this.props.percentage,
+      oldPercentage: null,
     };
+  }
+
+  handleBlur() {
+    this.props.percentageChange(this.state.oldPercentage, this.state.percentage);
   }
 
   render() {
@@ -17,7 +22,11 @@ class PlayerRow extends Component {
         <td><input type="text" /></td>
         <td><input type="text" /></td>
         <td><input type="text" readOnly /></td>
-        <td><input type="text" value={this.state.percentage} /></td>
+        <td><input type="text" value={this.state.percentage} 
+          onChange={(event) => this.setState({percentage: event.target.value})}
+          onFocus={(event) => this.setState({oldPercentage: event.target.value})}
+          onBlur={this.handleBlur.bind(this)}
+        /></td>
       </tr>
     );
   }
@@ -32,6 +41,7 @@ class PlayerRows extends Component {
       rbs: 7,
       wrs: 6,
       tes: 1,
+      sum: 100,
       qbRows: [<PlayerRow position="QB" key="1" percentage={.5} />],
       rbRows: [
         <PlayerRow position="RB" key="1" percentage={5} />,
@@ -58,6 +68,7 @@ class PlayerRows extends Component {
     this.updateRBRows = this.updateRBRows.bind(this);
     this.updateWRRows = this.updateWRRows.bind(this);
     this.updateTERows = this.updateTERows.bind(this);
+    this.calculateSum = this.calculateSum.bind(this);
   }
 
   updateQBRows(event) {
@@ -86,6 +97,13 @@ class PlayerRows extends Component {
     let teKeys = [...Array(parseInt(event.target.value)).keys()];
     teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} /> });
     this.setState({teRows});
+  }
+
+  calculateSum(oldValue, newValue) {
+    let difference = (newValue * 10 - oldValue * 10)/10;
+    let sum = (this.state.sum * 10 + difference * 10)/10;
+    this.setState({sum});
+    console.log(difference);
   }
 
   render() {
@@ -125,19 +143,30 @@ class PlayerRows extends Component {
         </div>
         <div className="players">
           <table>
-            <tr>
-              <td>Position</td>
-              <td>Player Name</td>
-              <td>Amount Spent</td>
-              <td>Maximum allowable amount</td>
-              <td>Maximum percentage of budget</td>
-            </tr>
+            <thead>
+              <tr>
+                <td>Position</td>
+                <td>Player Name</td>
+                <td>Amount Spent</td>
+                <td>Maximum allowable amount</td>
+                <td>Maximum percentage of budget</td>
+              </tr>
+            </thead>
+            <tbody>
             {this.state.qbRows}
             {this.state.wrRows}
             {this.state.rbRows}
             {this.state.teRows}
             <PlayerRow position="DST" percentage={.5} />
-            <PlayerRow position="K" percentage={.5} />
+            <PlayerRow position="K" percentage={.5} percentageChange={this.calculateSum} />
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{this.state.sum}</td>
+            </tr>
+            </tbody>
           </table>
         </div>
       </div>
