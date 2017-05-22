@@ -25,79 +25,101 @@ class PlayerRows extends Component {
       rbs: 7,
       wrs: 6,
       tes: 1,
-      qbRows: [<PlayerRow position="QB" />],
+      qbRows: [<PlayerRow position="QB" key="1" />],
       rbRows: [
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />,
-        <PlayerRow position="RB" />
+        <PlayerRow position="RB" key="1" />,
+        <PlayerRow position="RB" key="2" />,
+        <PlayerRow position="RB" key="3" />,
+        <PlayerRow position="RB" key="4" />,
+        <PlayerRow position="RB" key="5" />,
+        <PlayerRow position="RB" key="6" />,
+        <PlayerRow position="RB" key="7" />,
       ],
       wrRows: [
-        <PlayerRow position="WR" />,
-        <PlayerRow position="WR" />,
-        <PlayerRow position="WR" />,
-        <PlayerRow position="WR" />,
-        <PlayerRow position="WR" />,
-        <PlayerRow position="WR" />
+        <PlayerRow position="WR" key="1" />,
+        <PlayerRow position="WR" key="2" />,
+        <PlayerRow position="WR" key="3" />,
+        <PlayerRow position="WR" key="4" />,
+        <PlayerRow position="WR" key="5" />,
+        <PlayerRow position="WR" key="6" />,
       ],
-      teRows: [<PlayerRow position="TE" />],
+      teRows: [
+        <PlayerRow position="TE" key="1" />,
+      ],
     };
-    this.updateBudget = this.updateBudget.bind(this);
-    this.updateRBs = this.updateRBs.bind(this);
-    this.updateWRs = this.updateWRs.bind(this);
-    this.updateTEs = this.updateTEs.bind(this);
+    this.updateQBRows = this.updateQBRows.bind(this);
+    this.updateRBRows = this.updateRBRows.bind(this);
+    this.updateWRRows = this.updateWRRows.bind(this);
+    this.updateTERows = this.updateTERows.bind(this);
   }
 
-  updateBudget(event) {
-    this.setState({budget: event.target.value})
+  updateQBRows(event) {
+    let qbRows = [];
+    let qbKeys = [...Array(parseInt(event.target.value)).keys()];
+    qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} /> });
+    this.setState({qbRows});
   }
 
-  updateQBs(event) {
-    this.setState(() => {qbs: event.target.value});
-    this.updateQBRows();
+  updateRBRows(event) {
+    let rbRows = [];
+    let rbKeys = [...Array(parseInt(event.target.value)).keys()];
+    rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} /> });
+    this.setState({rbRows});
   }
 
-  updateQBRows() {
-    var qbRows = this.state.qbRows;
-    if(qbRows.length !== this.state.qbs){
-      for(var i=this.state.qbRows.length;i<this.state.qbs;i++){
-        qbRows.push(<PlayerRow position="QB" />);
-      };
-      this.setState(() => {qbRows: qbRows});
-    }
+  updateWRRows(event) {
+    let wrRows = [];
+    let wrKeys = [...Array(parseInt(event.target.value)).keys()];
+    wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} /> });
+    this.setState({wrRows}); 
   }
 
-  updateRBs(event) {
-   this.setState({rbs: event.target.value}) 
-  }
-
-  updateWRs(event) {
-   this.setState({wrs: event.target.value}) 
-  }
-
-  updateTEs(event) {
-   this.setState({tes: event.target.value}) 
+  updateTERows(event) {
+    let teRows = [];
+    let teKeys = [...Array(parseInt(event.target.value)).keys()];
+    teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} /> });
+    this.setState({teRows});
   }
 
   render() {
     return(
-      <div class="row">
-        <div class="setup">
-          <input type="text" value={this.state.budget} onChange={this.updateBudget} />
+      <div className="row">
+        <div className="setup">
+          <input type="text" 
+            value={this.state.budget} 
+            onChange={(event) => {this.setState({budget: event.target.value})}} 
+          />
           <span>
-            QBs<input type="text" value={this.state.qbs} onChange={this.updateQBs.bind(this)} />
-            RBs<input type="text" value={this.state.rbs} onChange={this.updateRBs} />
-            WRs<input type="text" value={this.state.wrs} onChange={this.updateWRs} />
-            TEs<input type="text" value={this.state.tes} onChange={this.updateTEs} />
+            QBs<input 
+              type="text" 
+              value={this.state.qbs} 
+              onChange={(event) => {this.setState({qbs: event.target.value})}} 
+              onBlur={this.updateQBRows} 
+              />
+            RBs<input 
+              type="text" 
+              value={this.state.rbs} 
+              onChange={(event) => {this.setState({rbs: event.target.value})}}
+              onBlur={this.updateRBRows}
+              />
+            WRs<input 
+              type="text" 
+              value={this.state.wrs} 
+              onChange={(event) => {this.setState({wrs: event.target.value})}} 
+              onBlur={this.updateWRRows}
+              />
+            TEs<input 
+              type="text" 
+              value={this.state.tes} 
+              onChange={(event) => this.setState({tes: event.target.value})} 
+              onBlur={this.updateTERows}
+              />
           </span>
         </div>
-        <div class="players">
+        <div className="players">
           {this.state.qbRows}
-          {this.state.rbRows}
           {this.state.wrRows}
+          {this.state.rbRows}
           {this.state.teRows}
         </div>
       </div>
