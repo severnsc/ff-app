@@ -42,26 +42,26 @@ class PlayerRows extends Component {
       wrs: 6,
       tes: 1,
       sum: 100,
-      qbRows: [<PlayerRow position="QB" key="1" percentage={.5} />],
+      qbRows: [<PlayerRow position="QB" key="1" percentage={.5} percentageChange={this.calculateSum.bind(this)} />],
       rbRows: [
-        <PlayerRow position="RB" key="1" percentage={5} />,
-        <PlayerRow position="RB" key="2" percentage={5} />,
-        <PlayerRow position="RB" key="3" percentage={2.5} />,
-        <PlayerRow position="RB" key="4" percentage={2.5} />,
-        <PlayerRow position="RB" key="5" percentage={1.25} />,
-        <PlayerRow position="RB" key="6" percentage={1.25} />,
-        <PlayerRow position="RB" key="7" percentage={.5} />,
+        <PlayerRow position="RB" key="1" percentage={5} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="2" percentage={5} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="3" percentage={2.5} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="4" percentage={2.5} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="5" percentage={1.25} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="6" percentage={1.25} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="RB" key="7" percentage={.5} percentageChange={this.calculateSum.bind(this)} />,
       ],
       wrRows: [
-        <PlayerRow position="WR" key="1" percentage={25} />,
-        <PlayerRow position="WR" key="2" percentage={25} />,
-        <PlayerRow position="WR" key="3" percentage={10} />,
-        <PlayerRow position="WR" key="4" percentage={10} />,
-        <PlayerRow position="WR" key="5" percentage={5} />,
-        <PlayerRow position="WR" key="6" percentage={5} />,
+        <PlayerRow position="WR" key="1" percentage={25} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="WR" key="2" percentage={25} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="WR" key="3" percentage={10} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="WR" key="4" percentage={10} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="WR" key="5" percentage={5} percentageChange={this.calculateSum.bind(this)} />,
+        <PlayerRow position="WR" key="6" percentage={5} percentageChange={this.calculateSum.bind(this)} />,
       ],
       teRows: [
-        <PlayerRow position="TE" key="1" percentage={.5} />,
+        <PlayerRow position="TE" key="1" percentage={.5} percentageChange={this.calculateSum.bind(this)} />,
       ],
     };
     this.updateQBRows = this.updateQBRows.bind(this);
@@ -74,28 +74,28 @@ class PlayerRows extends Component {
   updateQBRows(event) {
     let qbRows = [];
     let qbKeys = [...Array(parseInt(event.target.value)).keys()];
-    qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} /> });
+    qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentageChange={this.calculateSum} /> });
     this.setState({qbRows});
   }
 
   updateRBRows(event) {
     let rbRows = [];
     let rbKeys = [...Array(parseInt(event.target.value)).keys()];
-    rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} /> });
+    rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentageChange={this.calculateSum} /> });
     this.setState({rbRows});
   }
 
   updateWRRows(event) {
     let wrRows = [];
     let wrKeys = [...Array(parseInt(event.target.value)).keys()];
-    wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} /> });
+    wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentageChange={this.calculateSum} /> });
     this.setState({wrRows}); 
   }
 
   updateTERows(event) {
     let teRows = [];
     let teKeys = [...Array(parseInt(event.target.value)).keys()];
-    teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} /> });
+    teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentageChange={this.calculateSum} /> });
     this.setState({teRows});
   }
 
@@ -157,7 +157,7 @@ class PlayerRows extends Component {
             {this.state.wrRows}
             {this.state.rbRows}
             {this.state.teRows}
-            <PlayerRow position="DST" percentage={.5} />
+            <PlayerRow position="DST" percentage={.5} percentageChange={this.calculateSum} />
             <PlayerRow position="K" percentage={.5} percentageChange={this.calculateSum} />
             <tr>
               <td></td>
