@@ -3,6 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 
 class PlayerRow extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      percentage: this.props.percentage,
+    };
+  }
+
   render() {
     return (
       <tr>
@@ -10,7 +17,7 @@ class PlayerRow extends Component {
         <td><input type="text" /></td>
         <td><input type="text" /></td>
         <td><input type="text" readOnly /></td>
-        <td><input type="text" /></td>
+        <td><input type="text" value={this.state.percentage} /></td>
       </tr>
     );
   }
@@ -25,26 +32,26 @@ class PlayerRows extends Component {
       rbs: 7,
       wrs: 6,
       tes: 1,
-      qbRows: [<PlayerRow position="QB" key="1" />],
+      qbRows: [<PlayerRow position="QB" key="1" percentage={.5} />],
       rbRows: [
-        <PlayerRow position="RB" key="1" />,
-        <PlayerRow position="RB" key="2" />,
-        <PlayerRow position="RB" key="3" />,
-        <PlayerRow position="RB" key="4" />,
-        <PlayerRow position="RB" key="5" />,
-        <PlayerRow position="RB" key="6" />,
-        <PlayerRow position="RB" key="7" />,
+        <PlayerRow position="RB" key="1" percentage={5} />,
+        <PlayerRow position="RB" key="2" percentage={5} />,
+        <PlayerRow position="RB" key="3" percentage={2.5} />,
+        <PlayerRow position="RB" key="4" percentage={2.5} />,
+        <PlayerRow position="RB" key="5" percentage={1.25} />,
+        <PlayerRow position="RB" key="6" percentage={1.25} />,
+        <PlayerRow position="RB" key="7" percentage={.5} />,
       ],
       wrRows: [
-        <PlayerRow position="WR" key="1" />,
-        <PlayerRow position="WR" key="2" />,
-        <PlayerRow position="WR" key="3" />,
-        <PlayerRow position="WR" key="4" />,
-        <PlayerRow position="WR" key="5" />,
-        <PlayerRow position="WR" key="6" />,
+        <PlayerRow position="WR" key="1" percentage={25} />,
+        <PlayerRow position="WR" key="2" percentage={25} />,
+        <PlayerRow position="WR" key="3" percentage={10} />,
+        <PlayerRow position="WR" key="4" percentage={10} />,
+        <PlayerRow position="WR" key="5" percentage={5} />,
+        <PlayerRow position="WR" key="6" percentage={5} />,
       ],
       teRows: [
-        <PlayerRow position="TE" key="1" />,
+        <PlayerRow position="TE" key="1" percentage={.5} />,
       ],
     };
     this.updateQBRows = this.updateQBRows.bind(this);
@@ -129,8 +136,8 @@ class PlayerRows extends Component {
             {this.state.wrRows}
             {this.state.rbRows}
             {this.state.teRows}
-            <PlayerRow position="DST" />
-            <PlayerRow position="K" />
+            <PlayerRow position="DST" percentage={.5} />
+            <PlayerRow position="K" percentage={.5} />
           </table>
         </div>
       </div>
