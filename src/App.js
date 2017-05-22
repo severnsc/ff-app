@@ -5,13 +5,13 @@ import './App.css';
 class PlayerRow extends Component {
   render() {
     return (
-      <div>
-        {this.props.position}
-        <input type="text" />
-        <input type="text" />
-        <input type="text" readOnly />
-        <input type="text" />
-      </div>
+      <tr>
+        <td>{this.props.position}</td>
+        <td><input type="text" /></td>
+        <td><input type="text" /></td>
+        <td><input type="text" readOnly /></td>
+        <td><input type="text" /></td>
+      </tr>
     );
   }
 }
@@ -117,10 +117,21 @@ class PlayerRows extends Component {
           </span>
         </div>
         <div className="players">
-          {this.state.qbRows}
-          {this.state.wrRows}
-          {this.state.rbRows}
-          {this.state.teRows}
+          <table>
+            <tr>
+              <td>Position</td>
+              <td>Player Name</td>
+              <td>Amount Spent</td>
+              <td>Maximum allowable amount</td>
+              <td>Maximum percentage of budget</td>
+            </tr>
+            {this.state.qbRows}
+            {this.state.wrRows}
+            {this.state.rbRows}
+            {this.state.teRows}
+            <PlayerRow position="DST" />
+            <PlayerRow position="K" />
+          </table>
         </div>
       </div>
     );
