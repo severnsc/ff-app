@@ -51,52 +51,7 @@ class PlayerRows extends Component {
       tes: 1,
       sum: 100
     };
-    this.qbRows = [<PlayerRow position="QB" key="1" percentage={.5} percentageChange={this.calculateSum.bind(this)} budget={this.state.budget} />];
-    this.rbRows = [
-        <PlayerRow position="RB" key="1" percentage={5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="2" percentage={5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="3" percentage={2.5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="4" percentage={2.5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="5" percentage={1.25} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="6" percentage={1.25} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="RB" key="7" percentage={.5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-      ];
-    this.wrRows = [
-        <PlayerRow position="WR" key="1" percentage={25} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="WR" key="2" percentage={25} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="WR" key="3" percentage={10} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="WR" key="4" percentage={10} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="WR" key="5" percentage={5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-        <PlayerRow position="WR" key="6" percentage={5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-      ];
-    this.teRows = [
-        <PlayerRow position="TE" key="1" percentage={.5} percentageChange={this.calculateSum.bind(this)} budget={200} />,
-      ];
-    this.updateQBRows = this.updateQBRows.bind(this);
-    this.updateRBRows = this.updateRBRows.bind(this);
-    this.updateWRRows = this.updateWRRows.bind(this);
-    this.updateTERows = this.updateTERows.bind(this);
     this.calculateSum = this.calculateSum.bind(this);
-  }
-
-  updateQBRows(event) {
-    let qbKeys = [...Array(parseInt(event.target.value)).keys()];
-    this.qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentageChange={this.calculateSum} budget={this.state.budget} /> });
-  }
-
-  updateRBRows(event) {
-    let rbKeys = [...Array(parseInt(event.target.value)).keys()];
-    this.rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentageChange={this.calculateSum} budget={this.state.budget} /> });
-  }
-
-  updateWRRows(event) {
-    let wrKeys = [...Array(parseInt(event.target.value)).keys()];
-    this.wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentageChange={this.calculateSum} budget={this.state.budget} /> });
-  }
-
-  updateTERows(event) {
-    let teKeys = [...Array(parseInt(event.target.value)).keys()];
-    this.teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentageChange={this.calculateSum} budget={this.state.budget} /> });
   }
 
   calculateSum(oldValue, newValue) {
@@ -106,6 +61,37 @@ class PlayerRows extends Component {
   }
 
   render() {
+    
+    let qbKeys = null;
+    let qbRows = [];
+    if(this.state.qbs > 0){
+      qbKeys = [...Array(parseInt(this.state.qbs)).keys()];
+      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+    }
+
+    let rbKeys = null;
+    let rbRows = [];
+    if(this.state.rbs > 0){
+      rbKeys = [...Array(parseInt(this.state.rbs)).keys()];
+      let rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
+      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+    }
+
+    let wrKeys = null;
+    let wrRows = [];
+    if(this.state.wrs > 0){
+      wrKeys = [...Array(parseInt(this.state.wrs)).keys()];
+      let wrValues = [25, 25, 10, 10, 5, 5];
+      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+    }
+
+    let teKeys = null;
+    let teRows = [];
+    if(this.state.tes > 0){
+      teKeys = [...Array(parseInt(this.state.tes)).keys()];
+      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+    }
+
     return(
       <div className="row">
         <div className="setup">
@@ -117,8 +103,7 @@ class PlayerRows extends Component {
             QBs<input 
               type="text" 
               value={this.state.qbs} 
-              onChange={(event) => {this.setState({qbs: event.target.value})}} 
-              onBlur={this.updateQBRows} 
+              onChange={(event) => {this.setState({qbs: event.target.value})}}
               />
             RBs<input 
               type="text" 
@@ -152,10 +137,10 @@ class PlayerRows extends Component {
               </tr>
             </thead>
             <tbody>
-            {this.qbRows}
-            {this.wrRows}
-            {this.rbRows}
-            {this.teRows}
+            {qbRows}
+            {wrRows}
+            {rbRows}
+            {teRows}
             <PlayerRow position="DST" percentage={.5} percentageChange={this.calculateSum} budget={this.state.budget} />
             <PlayerRow position="K" percentage={.5} percentageChange={this.calculateSum} budget={this.state.budget} />
             <tr>
