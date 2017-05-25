@@ -28,7 +28,7 @@ class PlayerRow extends Component {
   }
 
   handleAmountSpentBlur() {
-    this.props.amountSpentChange(this.state.oldAmountSpent, this.state.amountSpent)
+    this.props.projectedSpendChange(this.state.oldAmountSpent, this.state.amountSpent)
   }
 
   calculateMax() {
@@ -75,10 +75,10 @@ class PlayerRows extends Component {
       wrs: 6,
       tes: 1,
       sum: 100,
-      amountSpent: 200,
+      projectedSpend: 200,
     };
     this.calculateSum = this.calculateSum.bind(this);
-    this.calculateAmountSpent = this.calculateAmountSpent.bind(this);
+    this.calculateProjectedSpend = this.calculateProjectedSpend.bind(this);
   }
 
   calculateSum(oldValue, newValue) {
@@ -87,10 +87,10 @@ class PlayerRows extends Component {
     this.setState({sum});
   }
 
-  calculateAmountSpent(oldValue, newValue) {
+  calculateProjectedSpend(oldValue, newValue) {
     const difference = newValue - oldValue;
-    const amountSpent = parseInt(this.state.amountSpent, 10) + difference;
-    this.setState({amountSpent});
+    const projectedSpend = parseInt(this.state.projectedSpend, 10) + difference;
+    this.setState({projectedSpend});
   }
 
   render() {
@@ -99,7 +99,7 @@ class PlayerRows extends Component {
     let qbRows = [];
     if(this.state.qbs > 0){
       qbKeys = [...Array(parseInt(this.state.qbs, 10)).keys()];
-      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
+      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} projectedSpendChange={this.calculateProjectedSpend} budget={this.state.budget} /> });
     }
 
     let rbKeys = null;
@@ -107,7 +107,7 @@ class PlayerRows extends Component {
     if(this.state.rbs > 0){
       rbKeys = [...Array(parseInt(this.state.rbs, 10)).keys()];
       const rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
-      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
+      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} projectedSpendChange={this.calculateProjectedSpend} budget={this.state.budget} /> });
     }
 
     let wrKeys = null;
@@ -115,14 +115,14 @@ class PlayerRows extends Component {
     if(this.state.wrs > 0){
       wrKeys = [...Array(parseInt(this.state.wrs, 10)).keys()];
       const wrValues = [25, 25, 10, 10, 5, 5];
-      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
+      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} projectedSpendChange={this.calculateProjectedSpend} budget={this.state.budget} /> });
     }
 
     let teKeys = null;
     let teRows = [];
     if(this.state.tes > 0){
       teKeys = [...Array(parseInt(this.state.tes, 10)).keys()];
-      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
+      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} projectedSpendChange={this.calculateProjectedSpend} budget={this.state.budget} /> });
     }
 
     return(
@@ -131,7 +131,7 @@ class PlayerRows extends Component {
           <input type="text" 
             value={this.state.budget} 
             onChange={(event) => {this.setState({budget: event.target.value})}}
-            onBlur={(event) => this.setState({amountSpent: event.target.value})} 
+            onBlur={(event) => this.setState({projectedSpend: event.target.value})} 
           />
           <span>
             QBs<input 
@@ -179,20 +179,20 @@ class PlayerRows extends Component {
                 position="DST" 
                 percentage={.5}
                 percentageChange={this.calculateSum}
-                amountSpentChange={this.calculateAmountSpent}
+                projectedSpendChange={this.calculateProjectedSpend}
                 budget={this.state.budget} />
               <PlayerRow 
                 position="K" 
                 percentage={.5} 
                 percentageChange={this.calculateSum}
-                amountSpentChange={this.calculateAmountSpent}
+                projectedSpendChange={this.calculateProjectedSpend}
                 budget={this.state.budget} 
               />
               <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Amount Spent: {this.state.amountSpent}</td>
+                <td>Projected Spend: {this.state.projectedSpend}</td>
                 <td>{this.state.sum}</td>
               </tr>
             </tbody>
