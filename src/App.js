@@ -90,7 +90,7 @@ class PlayerRows extends Component {
 
   calculateAmountSpent(oldValue, newValue) {
     let difference = newValue - oldValue;
-    let amountSpent = this.state.amountSpent + difference;
+    let amountSpent = this.state.amountSpent + parseInt(difference);
     this.setState({amountSpent});
   }
 
@@ -100,7 +100,7 @@ class PlayerRows extends Component {
     let qbRows = [];
     if(this.state.qbs > 0){
       qbKeys = [...Array(parseInt(this.state.qbs)).keys()];
-      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let rbKeys = null;
@@ -108,7 +108,7 @@ class PlayerRows extends Component {
     if(this.state.rbs > 0){
       rbKeys = [...Array(parseInt(this.state.rbs)).keys()];
       let rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
-      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let wrKeys = null;
@@ -116,14 +116,14 @@ class PlayerRows extends Component {
     if(this.state.wrs > 0){
       wrKeys = [...Array(parseInt(this.state.wrs)).keys()];
       let wrValues = [25, 25, 10, 10, 5, 5];
-      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let teKeys = null;
     let teRows = [];
     if(this.state.tes > 0){
       teKeys = [...Array(parseInt(this.state.tes)).keys()];
-      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} budget={this.state.budget} /> });
+      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     return(
@@ -131,10 +131,8 @@ class PlayerRows extends Component {
         <div className="setup">
           <input type="text" 
             value={this.state.budget} 
-            onChange={(event) => {
-              this.setState({budget: event.target.value});
-              this.setState({amountSpent: event.target.value});
-            }} 
+            onChange={(event) => {this.setState({budget: event.target.value})}}
+            onBlur={(event) => this.setState({amountSpent: event.target.value})} 
           />
           <span>
             QBs<input 
@@ -178,7 +176,12 @@ class PlayerRows extends Component {
               {wrRows}
               {rbRows}
               {teRows}
-              <PlayerRow position="DST" percentage={.5} percentageChange={this.calculateSum} budget={this.state.budget} />
+              <PlayerRow 
+                position="DST" 
+                percentage={.5}
+                percentageChange={this.calculateSum}
+                amountSpentChange={this.calculateAmountSpent}
+                budget={this.state.budget} />
               <PlayerRow 
                 position="K" 
                 percentage={.5} 
@@ -190,7 +193,7 @@ class PlayerRows extends Component {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td>Amount Spent: {this.state.amountSpent}</td>
                 <td>{this.state.sum}</td>
               </tr>
             </tbody>
