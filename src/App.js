@@ -9,17 +9,31 @@ class PlayerRow extends Component {
       percentage: this.props.percentage,
       oldPercentage: null,
       max: null,
-      amountSpent: "",
+      amountSpent: 0,
+      oldAmountSpent: null,
     };
     this.calculateMax = this.calculateMax.bind(this);
+    this.handleAmountSpentFocus = this.handleAmountSpentFocus.bind(this);
   }
 
-  handleBlur() {
+  handlePercentageBlur() {
     this.props.percentageChange(this.state.oldPercentage, this.state.percentage);
   }
 
+  handleAmountSpentFocus() {
+    if(this.state.amountSpent > 0){
+      this.setState({oldAmountSpent: this.state.amountSpent})
+    }else{
+      this.setState({oldAmountSpent: this.calculateMax()})
+    }
+  }
+
+  handleAmountSpentBlur() {
+    this.props.amountSpentChange(this.state.oldAmountSpent, this.state.amountSpent)
+  }
+
   calculateMax() {
-    if(this.state.amountSpent){
+    if(this.state.amountSpent > 0){
       return this.state.amountSpent
     }
     let multiplier = this.state.percentage / 100;
@@ -32,12 +46,20 @@ class PlayerRow extends Component {
       <tr>
         <td>{this.props.position}</td>
         <td><input type="text" /></td>
-        <td><input type="text" value={this.state.amountSpent} onChange={(event) => this.setState({amountSpent: event.target.value})} /></td>
+        <td>
+          <input 
+            type="text" 
+            value={this.state.amountSpent}
+            onFocus={this.handleAmountSpentFocus}
+            onChange={(event) => this.setState({amountSpent: event.target.value})} 
+            onBlur={this.handleAmountSpentBlur.bind(this)}
+          />
+        </td>
         <td><input type="text" readOnly value={this.calculateMax()} onChange={(event) => this.setState({max: event.target.value})} /></td>
         <td><input type="text" value={this.state.percentage} 
           onChange={(event) => this.setState({percentage: event.target.value})}
           onFocus={(event) => this.setState({oldPercentage: event.target.value})}
-          onBlur={this.handleBlur.bind(this)}
+          onBlur={this.handlePercentageBlur.bind(this)}
         /></td>
       </tr>
     );
@@ -57,6 +79,7 @@ class PlayerRows extends Component {
       amountSpent: 200,
     };
     this.calculateSum = this.calculateSum.bind(this);
+    this.calculateAmountSpent = this.calculateAmountSpent.bind(this);
   }
 
   calculateSum(oldValue, newValue) {
@@ -66,8 +89,8 @@ class PlayerRows extends Component {
   }
 
   calculateAmountSpent(oldValue, newValue) {
-    let difference = (newValue * 10 - oldValue * 10)/10;
-    let amountSpent = (this.state.amountSpent * 10 + difference * 10)/10;
+    let difference = newValue - oldValue;
+    let amountSpent = this.state.amountSpent + difference;
     this.setState({amountSpent});
   }
 
@@ -156,7 +179,13 @@ class PlayerRows extends Component {
               {rbRows}
               {teRows}
               <PlayerRow position="DST" percentage={.5} percentageChange={this.calculateSum} budget={this.state.budget} />
-              <PlayerRow position="K" percentage={.5} percentageChange={this.calculateSum} budget={this.state.budget} />
+              <PlayerRow 
+                position="K" 
+                percentage={.5} 
+                percentageChange={this.calculateSum}
+                amountSpentChange={this.calculateAmountSpent}
+                budget={this.state.budget} 
+              />
               <tr>
                 <td></td>
                 <td></td>
