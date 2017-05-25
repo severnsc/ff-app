@@ -20,15 +20,11 @@ class PlayerRow extends Component {
   }
 
   handleAmountSpentFocus() {
-    if(this.state.amountSpent > 0){
-      this.setState({oldAmountSpent: this.state.amountSpent})
-    }else{
-      this.setState({oldAmountSpent: this.calculateMax()})
-    }
+    this.setState({oldAmountSpent: this.state.amountSpent})
   }
 
   handleAmountSpentBlur() {
-    this.props.projectedSpendChange(this.state.oldAmountSpent, this.state.amountSpent)
+    this.props.amountSpentChange(this.state.oldAmountSpent, this.state.amountSpent)
   }
 
   calculateMax() {
@@ -91,10 +87,8 @@ class PlayerRows extends Component {
 
   calculateSpendAmounts(oldValue, newValue) {
     const difference = newValue - oldValue;
-    const projectedSpend = parseInt(this.state.projectedSpend, 10) + difference;
-    const amountSpent = this.state.amountSpent + parseInt(newValue, 10);
-    const amountRemaining = this.state.amountRemaining - parseInt(newValue, 10);
-    this.setState({projectedSpend});
+    const amountSpent = this.state.amountSpent + parseInt(difference, 10);
+    const amountRemaining = this.state.amountRemaining - parseInt(difference, 10);
     this.setState({amountSpent});
     this.setState({amountRemaining});
   }
@@ -105,7 +99,7 @@ class PlayerRows extends Component {
     let qbRows = [];
     if(this.state.qbs > 0){
       qbKeys = [...Array(parseInt(this.state.qbs, 10)).keys()];
-      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} projectedSpendChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
+      qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
     }
 
     let rbKeys = null;
@@ -113,7 +107,7 @@ class PlayerRows extends Component {
     if(this.state.rbs > 0){
       rbKeys = [...Array(parseInt(this.state.rbs, 10)).keys()];
       const rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
-      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} projectedSpendChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
+      rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
     }
 
     let wrKeys = null;
@@ -121,14 +115,14 @@ class PlayerRows extends Component {
     if(this.state.wrs > 0){
       wrKeys = [...Array(parseInt(this.state.wrs, 10)).keys()];
       const wrValues = [25, 25, 10, 10, 5, 5];
-      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} projectedSpendChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
+      wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
     }
 
     let teKeys = null;
     let teRows = [];
     if(this.state.tes > 0){
       teKeys = [...Array(parseInt(this.state.tes, 10)).keys()];
-      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} projectedSpendChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
+      teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateSpendAmounts} budget={this.state.budget} /> });
     }
 
     return(
@@ -185,13 +179,13 @@ class PlayerRows extends Component {
                 position="DST" 
                 percentage={.5}
                 percentageChange={this.calculateSum}
-                projectedSpendChange={this.calculateSpendAmounts}
+                amountSpentChange={this.calculateSpendAmounts}
                 budget={this.state.budget} />
               <PlayerRow 
                 position="K" 
                 percentage={.5} 
                 percentageChange={this.calculateSum}
-                projectedSpendChange={this.calculateSpendAmounts}
+                amountSpentChange={this.calculateSpendAmounts}
                 budget={this.state.budget} 
               />
               <tr>
@@ -201,7 +195,7 @@ class PlayerRows extends Component {
                   Amount Spent: {this.state.amountSpent}<br />
                   Amount Remaining: {this.state.amountRemaining}
                 </td>
-                <td>Projected Spend: {this.state.projectedSpend}</td>
+                <td></td>
                 <td>{this.state.sum}</td>
               </tr>
             </tbody>
