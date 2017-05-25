@@ -69,13 +69,14 @@ class PlayerRows extends Component {
   constructor(props){
     super(props);
     this.state = {
-      budget: 200,
+      budget: 400,
       qbs: 1,
       rbs: 7,
       wrs: 6,
       tes: 1,
       sum: 100,
-      projectedSpend: 200,
+      projectedSpend: 400,
+      amountSpent: 0,
     };
     this.calculateSum = this.calculateSum.bind(this);
     this.calculateProjectedSpend = this.calculateProjectedSpend.bind(this);
@@ -191,7 +192,7 @@ class PlayerRows extends Component {
               <tr>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td>Amount Spent: {this.state.amountSpent}</td>
                 <td>Projected Spend: {this.state.projectedSpend}</td>
                 <td>{this.state.sum}</td>
               </tr>
