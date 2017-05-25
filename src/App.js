@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class PlayerRow extends Component {
@@ -36,8 +35,8 @@ class PlayerRow extends Component {
     if(this.state.amountSpent > 0){
       return this.state.amountSpent
     }
-    let multiplier = this.state.percentage / 100;
-    let max = parseInt(this.props.budget) * multiplier;
+    const multiplier = this.state.percentage / 100;
+    const max = parseInt(this.props.budget, 10) * multiplier;
     return max;
   }
 
@@ -83,14 +82,14 @@ class PlayerRows extends Component {
   }
 
   calculateSum(oldValue, newValue) {
-    let difference = (newValue * 10 - oldValue * 10)/10;
-    let sum = (this.state.sum * 10 + difference * 10)/10;
+    const difference = (newValue * 10 - oldValue * 10)/10;
+    const sum = (this.state.sum * 10 + difference * 10)/10;
     this.setState({sum});
   }
 
   calculateAmountSpent(oldValue, newValue) {
-    let difference = newValue - oldValue;
-    let amountSpent = this.state.amountSpent + parseInt(difference);
+    const difference = newValue - oldValue;
+    const amountSpent = parseInt(this.state.amountSpent, 10) + difference;
     this.setState({amountSpent});
   }
 
@@ -99,30 +98,30 @@ class PlayerRows extends Component {
     let qbKeys = null;
     let qbRows = [];
     if(this.state.qbs > 0){
-      qbKeys = [...Array(parseInt(this.state.qbs)).keys()];
+      qbKeys = [...Array(parseInt(this.state.qbs, 10)).keys()];
       qbRows = qbKeys.map((x) => {return <PlayerRow position="QB" key={x} percentage={.5/(qbKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let rbKeys = null;
     let rbRows = [];
     if(this.state.rbs > 0){
-      rbKeys = [...Array(parseInt(this.state.rbs)).keys()];
-      let rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
+      rbKeys = [...Array(parseInt(this.state.rbs, 10)).keys()];
+      const rbValues = [5, 5, 2.5, 2.5, 1.25, 1.25, .5];
       rbRows = rbKeys.map((x) => {return <PlayerRow position="RB" key={x} percentage={rbValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let wrKeys = null;
     let wrRows = [];
     if(this.state.wrs > 0){
-      wrKeys = [...Array(parseInt(this.state.wrs)).keys()];
-      let wrValues = [25, 25, 10, 10, 5, 5];
+      wrKeys = [...Array(parseInt(this.state.wrs, 10)).keys()];
+      const wrValues = [25, 25, 10, 10, 5, 5];
       wrRows = wrKeys.map((x) => {return <PlayerRow position="WR" key={x} percentage={wrValues[x]} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
     let teKeys = null;
     let teRows = [];
     if(this.state.tes > 0){
-      teKeys = [...Array(parseInt(this.state.tes)).keys()];
+      teKeys = [...Array(parseInt(this.state.tes, 10)).keys()];
       teRows = teKeys.map((x) => {return <PlayerRow position="TE" key={x} percentage={.5/(teKeys.length)} percentageChange={this.calculateSum} amountSpentChange={this.calculateAmountSpent} budget={this.state.budget} /> });
     }
 
