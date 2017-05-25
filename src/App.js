@@ -9,7 +9,7 @@ class PlayerRow extends Component {
       percentage: this.props.percentage,
       oldPercentage: null,
       max: null,
-      amountSpent: null,
+      amountSpent: "",
     };
     this.calculateMax = this.calculateMax.bind(this);
   }
@@ -54,6 +54,7 @@ class PlayerRows extends Component {
       wrs: 6,
       tes: 1,
       sum: 100,
+      amountSpent: 200,
     };
     this.calculateSum = this.calculateSum.bind(this);
   }
@@ -101,7 +102,10 @@ class PlayerRows extends Component {
         <div className="setup">
           <input type="text" 
             value={this.state.budget} 
-            onChange={(event) => {this.setState({budget: event.target.value})}} 
+            onChange={(event) => {
+              this.setState({budget: event.target.value});
+              this.setState({amountSpent: event.target.value});
+            }} 
           />
           <span>
             QBs<input 
