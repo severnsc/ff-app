@@ -65,6 +65,12 @@ class PlayerRows extends Component {
     this.setState({sum});
   }
 
+  calculateAmountSpent(oldValue, newValue) {
+    let difference = (newValue * 10 - oldValue * 10)/10;
+    let amountSpent = (this.state.amountSpent * 10 + difference * 10)/10;
+    this.setState({amountSpent});
+  }
+
   render() {
     
     let qbKeys = null;
